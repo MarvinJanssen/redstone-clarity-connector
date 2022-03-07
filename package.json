@@ -1,0 +1,29 @@
+{
+  "name": "redstone-clarity-connector",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MarvinJanssen/redstone-clarity-connector.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MarvinJanssen/redstone-clarity-connector/issues"
+  },
+  "homepage": "https://github.com/MarvinJanssen/redstone-clarity-connector#readme",
+  "devDependencies": {
+    "ethereumjs-util": "^7.1.4",
+    "micro-stacks": "^0.2.3",
+    "redstone-node": "../redstone-node",
+    "ts-node": "^10.6.0"
+  }
+}
