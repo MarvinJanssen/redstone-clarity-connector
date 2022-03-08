@@ -55,7 +55,7 @@
 	(secp256k1-recover? hash signature)
 )
 
-(define-read-only (recover-signer-multi (timestamp uint) (entries (list 20 {symbol: (buff 32), value: uint})) (signatures (list 12 (buff 65))))
+(define-read-only (recover-signer-multi (timestamp uint) (entries (list 20 {symbol: (buff 32), value: uint})) (signatures (list 8 (buff 65))))
 	(let ((hash (generate-signable-message-hash timestamp entries)))
 		(map recover-signer-hash (list hash hash hash hash hash hash hash hash) signatures)
 	)
