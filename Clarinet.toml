@@ -1,11 +1,16 @@
 [project]
 name = "redstone-clarity-connector"
-authors = []
-description = ""
+authors = ["Marvin Janssen"]
+description = "RedStone Oracle connector Clarity contracts and libraries"
 telemetry = false
 requirements = []
 analysis = ["check_checker"]
 costs_version = 2
+
 [contracts.redstone-receiver]
-path = "contracts/redstone-receiver.clar"
+path = "contracts/examples/redstone-receiver.clar"
+depends_on = ["redstone-verify"]
+
+[contracts.redstone-verify]
+path = "contracts/redstone-verify.clar"
 depends_on = []

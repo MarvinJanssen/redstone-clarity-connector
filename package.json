@@ -1,7 +1,7 @@
 {
   "name": "redstone-clarity-connector",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "RedStone Oracle Clarity connector smart contracts and TypeScript libraries",
   "main": "index.js",
   "directories": {
     "test": "tests"
@@ -14,14 +14,14 @@
     "url": "git+https://github.com/MarvinJanssen/redstone-clarity-connector.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Marvin Janssen",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/MarvinJanssen/redstone-clarity-connector/issues"
   },
   "homepage": "https://github.com/MarvinJanssen/redstone-clarity-connector#readme",
   "devDependencies": {
-    "ethereumjs-util": "^7.1.4",
+    "keccak256": "^1.0.6",
     "micro-stacks": "^0.2.3",
     "redstone-node": "../redstone-node",
     "ts-node": "^10.6.0"
