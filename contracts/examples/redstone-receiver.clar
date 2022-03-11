@@ -42,6 +42,7 @@
 	(default-to u0 (get-block-info? time (- block-height u1)))
 )
 
+;; #[allow(unchecked_data)]
 (define-public (set-trusted-oracle (pubkey (buff 33)) (trusted bool))
 	(begin
 		(asserts! (is-eq (var-get contract-owner) tx-sender) err-not-contract-owner)

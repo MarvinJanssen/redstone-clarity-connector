@@ -18,10 +18,6 @@
 	redstone-value-shift
 )
 
-(define-read-only (unshift-value (value uint))
-	(/ value redstone-value-shift)
-)
-
 (define-private (assemble-iter (entry {symbol: (buff 32), value: uint}) (a (buff 512)))
 	(unwrap-panic (as-max-len? (concat a (concat (right-pad32 (get symbol entry)) (uint256-to-buff-be (get value entry)))) u512))
 )
@@ -41,10 +37,6 @@
 
 (define-read-only (verify-message (timestamp uint) (entries (list 20 {symbol: (buff 32), value: uint})) (signature (buff 65)) (public-key (buff 33)))
 	(secp256k1-verify (generate-signable-message-hash timestamp entries) signature public-key)
-)
-
-(define-read-only (verify-message-hash (hash (buff 32)) (signature (buff 65)) (public-key (buff 33)))
-	(secp256k1-verify hash signature public-key)
 )
 
 (define-read-only (recover-signer (timestamp uint) (entries (list 20 {symbol: (buff 32), value: uint})) (signature (buff 65)))

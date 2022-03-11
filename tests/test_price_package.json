@@ -1,0 +1,13 @@
+{
+	"timestamp": 11223344,
+	"prices": [
+		{
+			"symbol": "STXBTC",
+			"value": 1234
+		},
+		{
+			"symbol": "STXUSD",
+			"value": 4567
+		}
+	]
+}

@@ -5,7 +5,7 @@
 // work for both the server and the client side.
 
 import keccak256 from "keccak256";
-import { bufferCV, BufferCV, listCV, tupleCV, TupleCV, uintCV } from "micro-stacks/clarity";
+import { bufferCV, BufferCV, listCV, tupleCV, TupleCV, uintCV, UIntCV, ListCV } from "micro-stacks/clarity";
 import { bytesToHex, hexToBytes as hexToBytesMS } from "micro-stacks/common";
 import { compressPublicKey, serializePublicKey } from "micro-stacks/transactions";
 import { PricePackage, ShortSinglePrice } from "redstone-node/dist/src/types";
@@ -33,7 +33,7 @@ export function hexToBytes(hex: string): Uint8Array {
  * @returns 
  */
 export function liteDataHash(liteByteString: Uint8Array): Uint8Array {
-	return keccak256(bytesToHex(liteByteString));
+	return keccak256(`0x${bytesToHex(liteByteString)}`);
 }
 
 /**
@@ -44,7 +44,7 @@ export function liteDataHash(liteByteString: Uint8Array): Uint8Array {
  * @returns 
  */
 export function liteDataHashPersonalSign(liteDataHash: Uint8Array): Uint8Array {
-	return keccak256(bytesToHex(new Uint8Array([...ethPersonalSignPrefix, ...liteDataHash])));
+	return keccak256(`0x${bytesToHex(new Uint8Array([...ethPersonalSignPrefix, ...liteDataHash]))}`);
 }
 
 /**
@@ -104,16 +104,16 @@ export function stringToUint8Array(input: string) {
  * @param pricePackage 
  * @returns TupleCV
  */
-export function pricePackageToTupleCV(pricePackage: PricePackage): TupleCV {
-	return tupleCV({
+export function pricePackageToCV(pricePackage: PricePackage): { timestamp: UIntCV, prices: ListCV } {
+	return {
+		timestamp: uintCV(pricePackage.timestamp),
 		prices: listCV(
 			pricePackage.prices.map((entry: ShortSinglePrice) => tupleCV({
 				symbol: bufferCV(stringToUint8Array(entry.symbol)),
 				value: uintCV(shiftPriceValue(entry.value))
 			}))
-		),
-		timestamp: uintCV(pricePackage.timestamp)
-	});
+		)
+	};
 }
 
 /**
