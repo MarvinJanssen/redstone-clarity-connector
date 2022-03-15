@@ -1,4 +1,4 @@
-import { Clarinet, Tx, Chain, Account, types, assertEquals, pricePackageToCV } from "./deps.ts";
+import { Clarinet, Chain, Account, types, assertEquals, pricePackageToCV } from "./deps.ts";
 import type { PricePackage } from "./deps.ts";
 
 // Unfortunately it is not straightforward to import "../src/stacks-redstone.ts"
@@ -75,6 +75,24 @@ Clarinet.test({
 
 		const response = chain.callReadOnlyFn(contractName, "verify-message", [packageCV.timestamp, packageCV.prices, signature, publicKey], deployer.address);
 		response.result.expectBool(true);
+	},
+});
+
+Clarinet.test({
+	name: "#verify-message fails for invalid signatures & messages.",
+	async fn(chain: Chain, accounts: Map<string, Account>) {
+		const deployer = accounts.get("deployer")!;
+
+		const pricePackage: PricePackage = {
+			timestamp: 11223344,
+			prices: [{ symbol: "STXBTC", value: 1234 }, { symbol: "STXUSD", value: 0 }] // Valid value is 4567
+		}
+		const packageCV = pricePackageToCV(pricePackage);
+		const signature = "0x9d94402960c3b46f436350a204142d9f208fd921c20881e85610cda3b22a55082a57a69f877ba45869da9d76d23c421c9e924c7fdae09b4ff0713bc5c1953a8401";
+		const publicKey = "0x035ca791fed34bf9e9d54c0ce4b9626e1382cf13daa46aa58b657389c24a751cc6";
+
+		const response = chain.callReadOnlyFn(contractName, "verify-message", [packageCV.timestamp, packageCV.prices, signature, publicKey], deployer.address);
+		response.result.expectBool(false);
 	},
 });
 

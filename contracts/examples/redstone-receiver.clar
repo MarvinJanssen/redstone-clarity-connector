@@ -15,11 +15,7 @@
 ;; Last seen timestamp. The if clause is so that the contract can deploy on a Clarinet console session.
 (define-data-var last-seen-timestamp uint (if (> block-height u0) (get-last-block-timestamp) u0))
 
-(define-read-only (is-trusted-oracle (pubkey (buff 33)))
-	(default-to false (map-get? trusted-oracles pubkey))
-)
-
-(define-public (receive-price-data (timestamp uint) (entries (list 20 {symbol: (buff 32), value: uint})) (signature (buff 65)))
+(define-public (submit-price-data (timestamp uint) (entries (list 20 {symbol: (buff 32), value: uint})) (signature (buff 65)))
 	(let
 		(
 			;; Recover the pubkey of the signer.
@@ -28,8 +24,8 @@
 		;; Check if the signer is a trusted oracle.
 		(asserts! (is-trusted-oracle signer) err-untrusted-oracle)
 		;; Check if the data is not stale, depending on how the app is designed.
-		;;(asserts! (> timestamp (get-last-block-timestamp)) err-stale-data)
-		(asserts! (>= timestamp (var-get last-seen-timestamp)) err-stale-data)
+		(asserts! (> timestamp (get-last-block-timestamp)) err-stale-data) ;; timestamp should be larger than the last block timestamp.
+		(asserts! (>= timestamp (var-get last-seen-timestamp)) err-stale-data) ;; timestamp should be larger than or equal to the last seen timestamp.
 		;; Do app-specific actions here.
 		(print entries)
 		;; Save last seen timestamp.
@@ -40,6 +36,10 @@
 
 (define-private (get-last-block-timestamp)
 	(default-to u0 (get-block-info? time (- block-height u1)))
+)
+
+(define-read-only (is-trusted-oracle (pubkey (buff 33)))
+	(default-to false (map-get? trusted-oracles pubkey))
 )
 
 ;; #[allow(unchecked_data)]

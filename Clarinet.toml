@@ -14,3 +14,11 @@ depends_on = ["redstone-verify"]
 [contracts.redstone-verify]
 path = "contracts/redstone-verify.clar"
 depends_on = []
+
+[contracts.sip009-nft-trait]
+path = "contracts/examples/traits/sip009-nft-trait.clar"
+depends_on = []
+
+[contracts.usd-nft]
+path = "contracts/examples/usd-nft.clar"
+depends_on = ["sip009-nft-trait"]
