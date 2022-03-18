@@ -5,7 +5,7 @@
 // work for both the server and the client side.
 
 import keccak256 from "keccak256";
-import { bufferCV, BufferCV, listCV, tupleCV, TupleCV, uintCV, UIntCV, ListCV } from "micro-stacks/clarity";
+import { bufferCV, BufferCV, listCV, tupleCV, uintCV, UIntCV, ListCV } from "micro-stacks/clarity";
 import { bytesToHex, hexToBytes as hexToBytesMS } from "micro-stacks/common";
 import { compressPublicKey, serializePublicKey } from "micro-stacks/transactions";
 import { PricePackage, ShortSinglePrice } from "redstone-node/dist/src/types";
@@ -102,7 +102,7 @@ export function stringToUint8Array(input: string) {
 /**
  * Converts a RedStone PricePackage object into a Clarity Tuple.
  * @param pricePackage 
- * @returns TupleCV
+ * @returns Object
  */
 export function pricePackageToCV(pricePackage: PricePackage): { timestamp: UIntCV, prices: ListCV } {
 	return {
