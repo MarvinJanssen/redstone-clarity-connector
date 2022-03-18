@@ -89,7 +89,7 @@ Clarinet.test({
 });
 
 Clarinet.test({
-	name: "Mint alwyas uses the last seen exchange rate.",
+	name: "Mint always uses the last seen exchange rate.",
 	async fn(chain: Chain, accounts: Map<string, Account>) {
 		const [deployer, accountA] = ["deployer", "wallet_1"].map(who => accounts.get(who)!);
 		const stxusdRateOlder = 2.5;
@@ -136,7 +136,7 @@ Clarinet.test({
 Clarinet.test({
 	name: "Does not mint if the data or signature is invalid.",
 	async fn(chain: Chain, accounts: Map<string, Account>) {
-		const [deployer, accountA] = ["deployer", "wallet_1"].map(who => accounts.get(who)!);
+		const accountA = accounts.get("wallet_1")!;
 		const stxusdRate = 0.1;
 
 		const pricePackage: PricePackage = {
