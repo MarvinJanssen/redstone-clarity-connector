@@ -18,11 +18,11 @@
 	redstone-value-shift
 )
 
-(define-private (assemble-iter (entry {symbol: (buff 32), value: uint}) (a (buff 512)))
-	(unwrap-panic (as-max-len? (concat a (concat (right-pad32 (get symbol entry)) (uint256-to-buff-be (get value entry)))) u512))
+(define-private (assemble-iter (entry {symbol: (buff 32), value: uint}) (a (buff 640)))
+	(unwrap-panic (as-max-len? (concat a (concat (right-pad32 (get symbol entry)) (uint256-to-buff-be (get value entry)))) u640))
 )
 
-(define-read-only (generate-signable-message-hash (timestamp uint) (entries (list 20 {symbol: (buff 32), value: uint})))
+(define-read-only (generate-signable-message-hash (timestamp uint) (entries (list 10 {symbol: (buff 32), value: uint})))
 	(keccak256
 		(concat
 			eth-personal-sign-prefix
@@ -31,15 +31,15 @@
 	)
 )
 
-(define-read-only (generate-lite-data-bytes (timestamp uint) (entries (list 20 {symbol: (buff 32), value: uint})))
+(define-read-only (generate-lite-data-bytes (timestamp uint) (entries (list 10 {symbol: (buff 32), value: uint})))
 	(concat (fold assemble-iter entries 0x) (uint256-to-buff-be (shift-timestamp timestamp)))
 )
 
-(define-read-only (verify-message (timestamp uint) (entries (list 20 {symbol: (buff 32), value: uint})) (signature (buff 65)) (public-key (buff 33)))
+(define-read-only (verify-message (timestamp uint) (entries (list 10 {symbol: (buff 32), value: uint})) (signature (buff 65)) (public-key (buff 33)))
 	(secp256k1-verify (generate-signable-message-hash timestamp entries) signature public-key)
 )
 
-(define-read-only (recover-signer (timestamp uint) (entries (list 20 {symbol: (buff 32), value: uint})) (signature (buff 65)))
+(define-read-only (recover-signer (timestamp uint) (entries (list 10 {symbol: (buff 32), value: uint})) (signature (buff 65)))
 	(secp256k1-recover? (generate-signable-message-hash timestamp entries) signature)
 )
 
@@ -47,7 +47,7 @@
 	(secp256k1-recover? hash signature)
 )
 
-(define-read-only (recover-signer-multi (timestamp uint) (entries (list 20 {symbol: (buff 32), value: uint})) (signatures (list 8 (buff 65))))
+(define-read-only (recover-signer-multi (timestamp uint) (entries (list 10 {symbol: (buff 32), value: uint})) (signatures (list 8 (buff 65))))
 	(let ((hash (generate-signable-message-hash timestamp entries)))
 		(map recover-signer-hash (list hash hash hash hash hash hash hash hash) signatures)
 	)

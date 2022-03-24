@@ -15,7 +15,7 @@
 ;; Last seen timestamp. The if clause is so that the contract can deploy on a Clarinet console session.
 (define-data-var last-seen-timestamp uint (if (> block-height u0) (get-last-block-timestamp) u0))
 
-(define-public (submit-price-data (timestamp uint) (entries (list 20 {symbol: (buff 32), value: uint})) (signature (buff 65)))
+(define-public (submit-price-data (timestamp uint) (entries (list 10 {symbol: (buff 32), value: uint})) (signature (buff 65)))
 	(let
 		(
 			;; Recover the pubkey of the signer.
