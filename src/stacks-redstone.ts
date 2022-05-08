@@ -6,7 +6,7 @@
 
 import { keccak_256 } from '@noble/hashes/sha3';
 import { bufferCV, BufferCV, listCV, tupleCV, uintCV, UIntCV, ListCV } from "micro-stacks/clarity";
-import { bytesToHex, hexToBytes as hexToBytesMS, concatByteArrays } from "micro-stacks/common";
+import { hexToBytes as hexToBytesMS, concatByteArrays } from "micro-stacks/common";
 import { compressPublicKey, serializePublicKey } from "micro-stacks/transactions";
 import { PricePackage, ShortSinglePrice } from "redstone-node/dist/src/types";
 
@@ -33,7 +33,7 @@ export function hexToBytes(hex: string): Uint8Array {
  * @returns
  */
 export function liteDataHash(liteByteString: Uint8Array): Uint8Array {
-	return keccak_256(`0x${bytesToHex(liteByteString)}`);
+	return keccak_256(liteByteString);
 }
 
 /**
@@ -44,7 +44,7 @@ export function liteDataHash(liteByteString: Uint8Array): Uint8Array {
  * @returns
  */
 export function liteDataHashPersonalSign(liteDataHash: Uint8Array): Uint8Array {
-	return keccak_256(`0x${bytesToHex(concatByteArrays([ethPersonalSignPrefix, liteDataHash]))}`);
+	return keccak_256(concatByteArrays([ethPersonalSignPrefix, liteDataHash]));
 }
 
 /**
@@ -57,7 +57,7 @@ export function compressRedstonePubkey(pubKey: Uint8Array): Uint8Array {
 	if (pubKey.length === 33)
 		return pubKey;
 	else if (pubKey.length === 64)
-		pubKey = new Uint8Array([0x04, ...Array.from(pubKey)]);
+		pubKey = new Uint8Array([0x04, ...pubKey]);
 	return serializePublicKey(compressPublicKey(pubKey));
 }
 
