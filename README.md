@@ -52,6 +52,19 @@ Example projects:
 
 The example contracts are commented every step of the way.
 
+## Deployment addresses
+
+The `redstone-verify` contract is deployed on mainnet as well as testnet. Developers can reference these contracts for use in their projects.
+
+- Mainnet: [SPDBEG5X8XD50SPM1JJH0E5CTXGDV5NJTKAKKR5V.redstone-verify](https://explorer.stacks.co/txid/0x8de1fb0a41d6a8a962c8016c3a5178176fc51c206afa72f71f5747a6246a37bb?chain=mainnet)
+- Testnet: [STDBEG5X8XD50SPM1JJH0E5CTXGDV5NJTJTTH7YB.redstone-verify](https://explorer.stacks.co/txid/0x35952be366691c79243cc0fc43cfcf90ae71ed66a9b6d9578b167c28965bbf7e?chain=testnet)
+
+Usage example:
+
+```clarity
+(try! (contract-call? 'SPDBEG5X8XD50SPM1JJH0E5CTXGDV5NJTKAKKR5V.redstone-verify recover-signer timestamp entries signature))
+```
+
 ## Work in progress
 
 Although this is an initial working release, there is more work left to be done. Here are the main points (PRs welcome):
@@ -59,7 +72,6 @@ Although this is an initial working release, there is more work left to be done.
 - Comprehensive unit tests for the smart contracts. The current tests cover the core functionality but not all code branches are currently covered.
 - Remove `micro-stacks` dependency of `stacks-redstone.ts` so that it can be used with both `micro-stacks` and `stacks.js`.
 - An end to end example project that contains a basic UI, Stacks wallet connection, data retrieval via the RedStone API, and supporting smart contract.
-- Deploying the stateless `redstone-verify` library contract to mainnet and testnet. We will do this once we reach the first stable release. This readme will be updated with the contract addresses when that happens.
 
 ## License
 
