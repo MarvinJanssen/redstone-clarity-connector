@@ -4,9 +4,9 @@
 // at `scripts/sign.ts` for an example at how to use this library. It should
 // work for both the server and the client side.
 
-import keccak256 from "keccak256";
+import { keccak_256 } from '@noble/hashes/sha3';
 import { bufferCV, BufferCV, listCV, tupleCV, uintCV, UIntCV, ListCV } from "micro-stacks/clarity";
-import { bytesToHex, hexToBytes as hexToBytesMS } from "micro-stacks/common";
+import { hexToBytes as hexToBytesMS, concatByteArrays } from "micro-stacks/common";
 import { compressPublicKey, serializePublicKey } from "micro-stacks/transactions";
 import { PricePackage, ShortSinglePrice } from "redstone-node/dist/src/types";
 
@@ -19,7 +19,7 @@ export const ethPersonalSignPrefix = new Uint8Array([
 /**
  * Utility conversion function that can take both 0x prefixed
  * and unprefixed hex strings.
- * @param hex 
+ * @param hex
  * @returns Uint8Array
  */
 export function hexToBytes(hex: string): Uint8Array {
@@ -29,28 +29,28 @@ export function hexToBytes(hex: string): Uint8Array {
 /**
  * Calculate a RedStone lite data hash. This hash is not the one
  * that is ultimately signed. Use liteDataHashPersonalSign instead.
- * @param liteByteString 
- * @returns 
+ * @param liteByteString
+ * @returns
  */
 export function liteDataHash(liteByteString: Uint8Array): Uint8Array {
-	return keccak256(`0x${bytesToHex(liteByteString)}`);
+	return keccak_256(liteByteString);
 }
 
 /**
  * Calculate the signable lite data hash by prefixing it with the
  * Ethereum personalSign prefix and hashing it. This is needed
  * because lite data hashes are signed using PersonalSign.
- * @param liteDataHash 
- * @returns 
+ * @param liteDataHash
+ * @returns
  */
 export function liteDataHashPersonalSign(liteDataHash: Uint8Array): Uint8Array {
-	return keccak256(`0x${bytesToHex(new Uint8Array([...ethPersonalSignPrefix, ...liteDataHash]))}`);
+	return keccak_256(concatByteArrays([ethPersonalSignPrefix, liteDataHash]));
 }
 
 /**
  * Compresses a public key, to be used on the signerPubkey property
  * of a PricePackage object.
- * @param pubKey 
+ * @param pubKey
  * @returns Uint8Array
  */
 export function compressRedstonePubkey(pubKey: Uint8Array): Uint8Array {
@@ -64,7 +64,7 @@ export function compressRedstonePubkey(pubKey: Uint8Array): Uint8Array {
 /**
  * Converts a lite signature to the format expected by Stacks. It merely
  * subtracts 27 from the recovery byte and returns it as a Uint8Array.
- * @param liteSignature 
+ * @param liteSignature
  * @returns Uint8Array
  */
 export function liteSignatureToStacksSignature(liteSignature: Uint8Array | string) {
@@ -80,7 +80,7 @@ export function liteSignatureToStacksSignature(liteSignature: Uint8Array | strin
 
 /**
  * Shifts the price value according to RedStone serialisation.
- * @param value 
+ * @param value
  * @returns shifted value
  */
 export function shiftPriceValue(value: number) {
@@ -101,7 +101,7 @@ export function stringToUint8Array(input: string) {
 
 /**
  * Converts a RedStone PricePackage object into a Clarity Tuple.
- * @param pricePackage 
+ * @param pricePackage
  * @returns Object
  */
 export function pricePackageToCV(pricePackage: PricePackage): { timestamp: UIntCV, prices: ListCV } {
@@ -120,7 +120,7 @@ export function pricePackageToCV(pricePackage: PricePackage): { timestamp: UIntC
  * Wrap a RedStone lite signature in a Clarity Buffer. It will also
  * convert the signature to the expected format if it detects it
  * has not been converted using liteSignatureToStacksSignature yet.
- * @param liteSignature 
+ * @param liteSignature
  * @returns BufferCV
  */
 export function liteSignatureToBufferCV(liteSignature: Uint8Array | string): BufferCV {
