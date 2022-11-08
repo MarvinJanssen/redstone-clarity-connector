@@ -22,6 +22,8 @@
   "homepage": "https://github.com/MarvinJanssen/redstone-clarity-connector#readme",
   "devDependencies": {
     "@noble/hashes": "1.0.0",
+    "@stacks/common": "^5.0.0",
+    "@stacks/transactions": "^5.0.2",
     "micro-stacks": "0.2.3",
     "redstone-node": "0.4.27",
     "ts-node": "10.6.0"
